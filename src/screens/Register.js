@@ -33,7 +33,7 @@ const Register = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <Text style={styles.heading}>Register</Text>
       <TextInput
         label="Email"
@@ -59,13 +59,6 @@ const Register = () => {
 export default Register;
 
 const styles = StyleSheet.create({
-  container: {
-    display: "flex",
-    flex: 1,
-    justifyContent: "center",
-    margin: 16,
-  },
-
   heading: {
     margin: 8,
     fontSize: 24,

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { firebase } from "../firebase/config";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +35,7 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={globalStyles.container}>
       <Text style={styles.heading}>Login</Text>
       <TextInput
         label="Email"
