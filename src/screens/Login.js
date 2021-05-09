@@ -3,7 +3,8 @@ import { StyleSheet, Text, View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { firebase } from "../firebase/config";
 
-const Login = () => {
+import { globalStyles } from "../helpers/theme";
+const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,6 +24,9 @@ const Login = () => {
               return;
             }
             const user = firestoreDocument.data();
+
+            alert("Succesfully LoggedIn");
+            navigation.navigate("Home");
             // navigation.navigate("Home", { user });
           })
           .catch((error) => {
@@ -35,7 +39,7 @@ const Login = () => {
   };
 
   return (
-    <View style={globalStyles.container}>
+    <View style={globalStyles.authContainer}>
       <Text style={styles.heading}>Login</Text>
       <TextInput
         label="Email"
@@ -53,6 +57,10 @@ const Login = () => {
       />
       <Button style={styles.button} mode="contained" onPress={onLogin}>
         Login
+      </Button>
+
+      <Button onPress={() => navigation.navigate("Register")}>
+        Create a New Account
       </Button>
     </View>
   );

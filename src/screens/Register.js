@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { firebase } from "../firebase/config";
-const Register = () => {
+
+import { Colors, globalStyles } from "../helpers/theme";
+
+const Register = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -21,7 +24,7 @@ const Register = () => {
           .doc(uid)
           .set(data)
           .then(() => {
-            // navigation.navigate("Home", { user: data });
+            navigation.navigate("Login", { user: data });
           })
           .catch((error) => {
             alert(error);
@@ -33,7 +36,7 @@ const Register = () => {
   };
 
   return (
-    <View style={globalStyles.container}>
+    <View style={globalStyles.authContainer}>
       <Text style={styles.heading}>Register</Text>
       <TextInput
         label="Email"
@@ -51,6 +54,10 @@ const Register = () => {
       />
       <Button style={styles.button} mode="contained" onPress={onRegister}>
         Register
+      </Button>
+
+      <Button onPress={() => navigation.navigate("Login")}>
+        Already have an account?
       </Button>
     </View>
   );

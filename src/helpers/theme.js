@@ -20,6 +20,12 @@ export const globalStyles = StyleSheet.create({
   container: {
     display: "flex",
     flex: 1,
+    margin: 16,
+  },
+
+  authContainer: {
+    display: "flex",
+    flex: 1,
     justifyContent: "center",
     margin: 16,
   },
