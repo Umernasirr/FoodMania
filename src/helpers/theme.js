@@ -18,5 +18,9 @@ export const globalStyles = StyleSheet.create({
   },
 
   //   TODO: ZAHARA
-  button: {},
+
+  button: {
+    padding: 10,
+    backgroundColor: Colors.secondary,
+  },
 });
