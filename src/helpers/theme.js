@@ -5,18 +5,10 @@ export const Colors = {
   secondary: "#F56B6B",
   dark: "#2E2F31",
   light: "#e4e4e4",
+  white: "#FFFFFF",
 };
 
 export const globalStyles = StyleSheet.create({
-  container: {
-    height: 200,
-    width: 400,
-    marginVertical: 20,
-    borderColor: "#2E2F31",
-    borderWidth: 2,
-    backgroundColor: Colors.secondary,
-  },
-
   container: {
     display: "flex",
     flex: 1,
@@ -30,6 +22,11 @@ export const globalStyles = StyleSheet.create({
     margin: 16,
   },
 
+  spacer: {
+    margin: 8,
+  },
+
+  bigSpacer: { margin: 16 },
   button: {
     padding: 10,
     backgroundColor: Colors.secondary,
