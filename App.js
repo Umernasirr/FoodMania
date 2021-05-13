@@ -4,31 +4,29 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import { Ionicons } from "@expo/vector-icons";
+
 import { useFonts } from "expo-font";
 
 import {
   ActivityIndicator,
   Provider as PaperProvider,
-  DefaultTheme,
 } from "react-native-paper";
 
 // Screens
 import Home from "./src/screens/Home";
+import Settings from "./src/screens/Settings";
+import Menu from "./src/screens/Menu";
 import Login from "./src/screens/Login";
 import Register from "./src/screens/Register";
-import { Colors } from "./src/helpers/theme";
+import { Colors, theme } from "./src/helpers/theme";
+import ItemDetails from "./src/screens/ItemDetails";
 
 // TODO: Install a library material bottom navigator
-
-const theme = {
-  ...DefaultTheme,
-  roundness: 2,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: Colors.primary,
-    accent: Colors.secondary,
-  },
-};
 
 export default function App() {
   const [loaded] = useFonts({
@@ -36,17 +34,70 @@ export default function App() {
   });
 
   const Stack = createStackNavigator();
+  const BottomTab = createBottomTabNavigator();
+  const RestaurantStack = createStackNavigator();
+
+  const RestaurantStackComponent = () => (
+    <RestaurantStack.Navigator headerMode="none" initialRouteName="MenuMain">
+      <RestaurantStack.Screen name="MenuMain" component={Menu} />
+
+      <RestaurantStack.Screen name="ItemDetails" component={ItemDetails} />
+    </RestaurantStack.Navigator>
+  );
+
+  const MainStackComponent = () => (
+    <Stack.Navigator headerMode="none" initialRouteName="Home">
+      <Stack.Screen name="Register" component={Register} />
+
+      <Stack.Screen name="Login" component={Login} />
+
+      <Stack.Screen name="Home" component={Home} />
+    </Stack.Navigator>
+  );
 
   return loaded ? (
     <NavigationContainer>
       <PaperProvider theme={theme}>
-        <Stack.Navigator headerMode="none" initialRouteName="Home">
-          <Stack.Screen name="Register" component={Register} />
+        <BottomTab.Navigator
+          initialRouteName="Home"
+          tabBarOptions={{
+            activeTintColor: Colors.primary,
+            inactiveTintColor: Colors.dark,
+          }}
+        >
+          <BottomTab.Screen
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Ionicons color={color} name="home-outline" size={24} />
+              ),
 
-          <Stack.Screen name="Login" component={Login} />
+              tabBarLabel: "Dashboard",
+            }}
+            name="Home"
+            component={MainStackComponent}
+          />
 
-          <Stack.Screen name="Home" component={Home} />
-        </Stack.Navigator>
+          <BottomTab.Screen
+            options={{
+              tabBarIcon: ({ color }) => (
+                <MaterialIcons color={color} name="restaurant-menu" size={24} />
+              ),
+            }}
+            name="Menu"
+            component={RestaurantStackComponent}
+          />
+
+          <BottomTab.Screen
+            initialParams={[]}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Ionicons color={color} name="ios-settings-outline" size={24} />
+              ),
+            }}
+            name="Settings"
+            component={Settings}
+          />
+        </BottomTab.Navigator>
       </PaperProvider>
     </NavigationContainer>
   ) : (

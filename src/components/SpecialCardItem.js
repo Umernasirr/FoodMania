@@ -3,20 +3,41 @@ import { StyleSheet, Text, View, Image } from "react-native";
 import { Colors } from "../helpers/theme";
 import { Button, TouchableRipple } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
+import { AirbnbRating } from "react-native-ratings";
 
-const SpecialCardItem = ({ name, price, weight, img }) => {
+const SpecialCardItem = ({
+  id,
+  name,
+  price,
+  weight,
+  img,
+  category,
+  rating,
+  callback,
+}) => {
   if (name.length > 16) {
     name = name.slice(0, 13) + "...";
   }
   return (
     <TouchableRipple
-      onPress={() => console.log("Pressed")}
+      onPress={() =>
+        callback({ id, name, price, weight, img, category, rating })
+      }
       rippleColor={Colors.secondary}
       style={styles.specialItem}
     >
       <View style={styles.itemContainer}>
         <View style={styles.itemDesc}>
           <Text style={styles.name}>{name} </Text>
+          <View style={{ alignSelf: "flex-start" }}>
+            <AirbnbRating
+              showRating={false}
+              count={5}
+              defaultRating={rating}
+              size={16}
+              isDisabled
+            />
+          </View>
           <Text style={styles.weight}>Weight: {weight} gr</Text>
           <Text style={styles.price}>Price: {price} $</Text>
           <Button
@@ -44,7 +65,7 @@ export default SpecialCardItem;
 const styles = StyleSheet.create({
   specialItem: {
     marginVertical: 8,
-    height: 160,
+    height: 180,
     borderRadius: 16,
     justifyContent: "center",
     paddingHorizontal: 16,
@@ -94,6 +115,5 @@ const styles = StyleSheet.create({
     height: 80,
     borderRadius: 40,
     padding: 60,
-    elevation: 5,
   },
 });
