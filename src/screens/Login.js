@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { firebase } from "../firebase/config";
 
-import { globalStyles } from "../helpers/theme";
+import { globalStyles, Colors } from "../helpers/theme";
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,6 +40,9 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={globalStyles.authContainer}>
+      <View style={globalStyles.triangleTop} />
+      <View style={globalStyles.triangleBottom} />
+
       <Text style={styles.heading}>Login</Text>
       <TextInput
         label="Email"

@@ -3,12 +3,20 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Colors, globalStyles } from "../helpers/theme";
 import { TouchableRipple } from "react-native-paper";
-
+import { useNavigation } from "@react-navigation/native";
 const CardItem = ({ name, icoName }) => {
+  const navigation = useNavigation();
   return (
     <TouchableRipple
       rippleColor={Colors.white}
-      onPress={() => console.log("ho")}
+      onPress={() =>
+        navigation.navigate("Menu", {
+          screen: "MenuMain",
+          params: {
+            category: name,
+          },
+        })
+      }
       style={styles.cardItem}
     >
       <>
@@ -50,6 +58,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
     fontSize: 18,
     elevation: 8,
+    fontWeight: "300",
+    color: Colors.black,
   },
   icon: {
     borderWidth: 2,

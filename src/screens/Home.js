@@ -9,8 +9,8 @@ import SpecialCardItem from "../components/SpecialCardItem";
 const Home = () => {
   return (
     <View style={globalStyles.container}>
-      <View style={styles.triangleTop} />
-      <View style={styles.triangleBottom} />
+      <View style={globalStyles.triangleTop} />
+      <View style={globalStyles.triangleBottom} />
       <ScrollView>
         <View style={globalStyles.bigSpacer} />
         <View style={globalStyles.bigSpacer} />
@@ -91,40 +91,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     lineHeight: 70,
     letterSpacing: 2,
-  },
-
-  triangleTop: {
-    position: "absolute",
-    top: -20,
-    left: -40,
-    width: 0,
-    height: 0,
-    backgroundColor: "transparent",
-    borderStyle: "solid",
-    borderLeftWidth: 150,
-    borderRightWidth: 150,
-    borderBottomWidth: 250,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: Colors.light,
-    transform: [{ rotate: "90deg" }],
-  },
-
-  triangleBottom: {
-    position: "absolute",
-    bottom: -20,
-    right: -40,
-    width: 0,
-    height: 0,
-    backgroundColor: "transparent",
-    borderStyle: "solid",
-    borderLeftWidth: 150,
-    borderRightWidth: 150,
-    borderBottomWidth: 250,
-    borderLeftColor: "transparent",
-    borderRightColor: "transparent",
-    borderBottomColor: Colors.secondary,
-    transform: [{ rotate: "270deg" }],
-    opacity: 0.3,
   },
 });
