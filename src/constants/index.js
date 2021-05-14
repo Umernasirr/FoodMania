@@ -68,6 +68,27 @@ export const specialItems = [
   },
 ];
 
+export const CARTITEMS = [
+  {
+    id: 1,
+    name: "Pasta Pesto",
+    price: 60,
+    weight: 128,
+    img: require("../../assets/images/pasta.png"),
+    category: "Italian",
+    rating: 4,
+  },
+  {
+    id: 3,
+    name: "Pepsi Coke",
+    price: 57,
+    weight: 23,
+    img: require("../../assets/images/pepsi.png"),
+    category: "Soft Drinks",
+    rating: 3,
+  },
+];
+
 export const ITEMS = [
   {
     id: 1,

@@ -4,10 +4,12 @@ import { DefaultTheme } from "react-native-paper";
 export const Colors = {
   primary: "#FCCA3E",
   secondary: "#F56B6B",
+  tertiary: "#1B3265",
   dark: "#2E2F31",
   light: "#e4e4e4",
   white: "#FFFFFF",
   black: "#000000",
+  gray: "#C3C4C8",
 };
 
 export const globalStyles = StyleSheet.create({
