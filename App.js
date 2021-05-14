@@ -25,6 +25,7 @@ import Login from "./src/screens/Login";
 import Register from "./src/screens/Register";
 import { Colors, theme } from "./src/helpers/theme";
 import ItemDetails from "./src/screens/ItemDetails";
+import Cart from "./src/screens/Cart";
 
 // TODO: Install a library material bottom navigator
 
@@ -59,7 +60,7 @@ export default function App() {
     <NavigationContainer>
       <PaperProvider theme={theme}>
         <BottomTab.Navigator
-          initialRouteName="Home"
+          initialRouteName="Cart"
           tabBarOptions={{
             activeTintColor: Colors.primary,
             inactiveTintColor: Colors.dark,
@@ -85,6 +86,17 @@ export default function App() {
             }}
             name="Menu"
             component={RestaurantStackComponent}
+          />
+
+          <BottomTab.Screen
+            initialParams={[]}
+            options={{
+              tabBarIcon: ({ color }) => (
+                <Ionicons color={color} name="cart-outline" size={24} />
+              ),
+            }}
+            name="Cart"
+            component={Cart}
           />
 
           <BottomTab.Screen
