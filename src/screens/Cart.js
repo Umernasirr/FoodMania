@@ -5,7 +5,7 @@ import CartItem from "../components/CartItem";
 import { CARTITEMS } from "../constants";
 import { Colors, globalStyles } from "../helpers/theme";
 
-const Cart = () => {
+const Cart = ({ navigation }) => {
   return (
     <View style={globalStyles.container}>
       <View style={globalStyles.triangleTop} />
