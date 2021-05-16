@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button } from "react-native-paper";
 import { Colors, globalStyles } from "../helpers/theme";
 import { FontAwesome } from "@expo/vector-icons";
+import { CartContext } from "../contexts/CartContext";
 
-const CartItem = ({ id, price, name, weight, img }) => {
-  const [count, setCount] = useState(1);
+const CartItem = ({ id, price, name, weight, img, count }) => {
+  const { cart, setCart } = useContext(CartContext);
+
+  const onCountUpdate = (id, op) => {
+    const tempCart = cart.map((cartItem) => {
+      if (cartItem.id === id) {
+        if (op === "+") {
+          cartItem.count += 1;
+        } else if (op === "-") {
+          cartItem.count -= 1;
+        }
+      }
+      return cartItem;
+    });
+
+    setCart(tempCart);
+  };
+
   return (
     <View style={styles.cartItemContainer}>
       <View style={styles.left}>
@@ -21,14 +38,14 @@ const CartItem = ({ id, price, name, weight, img }) => {
         <View style={styles.actions}>
           <Button
             style={styles.button}
-            onPress={() => count < 20 && setCount(count + 1)}
+            onPress={() => count < 20 && onCountUpdate(id, "+")}
           >
             <FontAwesome name="plus" size={18} color={Colors.primary} />
           </Button>
           <Text style={styles.count}>{count}</Text>
           <Button
             style={styles.button}
-            onPress={() => count > 1 && setCount(count - 1)}
+            onPress={() => count > 1 && onCountUpdate(id, "-")}
           >
             <FontAwesome name="minus" size={18} color={Colors.primary} />
           </Button>
