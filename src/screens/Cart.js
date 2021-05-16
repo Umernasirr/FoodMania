@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import CartItem from "../components/CartItem";
-import { CARTITEMS } from "../constants";
 import { Colors, globalStyles } from "../helpers/theme";
 
+import { CartContext } from "../contexts/CartContext";
+
 const Cart = ({ navigation }) => {
+  const { cart, setCart } = useContext(CartContext);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    let tempTotal = 0;
+    cart.map((cartItem) => {
+      tempTotal += cartItem.count * cartItem.price;
+    });
+
+    setTotal(tempTotal);
+  }, [cart]);
+
   return (
     <View style={globalStyles.container}>
       <View style={globalStyles.triangleTop} />
@@ -13,49 +26,76 @@ const Cart = ({ navigation }) => {
       <View style={globalStyles.bigSpacer} />
       <Text style={styles.heading}>My Cart</Text>
       <View style={globalStyles.spacer} />
-      <FlatList
-        data={CARTITEMS}
-        renderItem={({ item, separators }) => (
-          <View
-            style={{ flex: 1 }}
-            key={item.key}
-            onShowUnderlay={separators.highlight}
-            onHideUnderlay={separators.unhighlight}
-          >
-            <CartItem
-              id={item.id}
-              name={item.name}
-              price={item.price}
-              weight={item.weight}
-              img={item.img}
-            />
+
+      {cart.length > 0 ? (
+        <View>
+          <FlatList
+            data={cart}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item, separators }) => (
+              <View
+                style={{ flex: 1 }}
+                key={item.key}
+                onShowUnderlay={separators.highlight}
+                onHideUnderlay={separators.unhighlight}
+              >
+                <CartItem
+                  id={item.id}
+                  name={item.name}
+                  price={item.price}
+                  weight={item.weight}
+                  img={item.img}
+                  count={item.count}
+                />
+              </View>
+            )}
+          />
+
+          <View style={styles.totalPriceContainer}>
+            <Text style={styles.totalPrice}>Total Price: ${total}</Text>
           </View>
-        )}
-      />
 
-      <View style={styles.totalPriceContainer}>
-        <Text style={styles.totalPrice}>Total Price: $ 50</Text>
-      </View>
+          <View style={styles.actions}>
+            <Button
+              style={styles.actionButtons}
+              color={Colors.secondary}
+              mode="contained"
+              labelStyle={styles.actionsButtonLabel}
+              onPress={() => navigation.navigate("Billing")}
+            >
+              Checkout & Billing
+            </Button>
 
-      <View style={styles.actions}>
-        <Button
-          style={styles.actionButtons}
-          color={Colors.secondary}
-          mode="contained"
-          labelStyle={styles.actionsButtonLabel}
-        >
-          Go To Checkout
-        </Button>
-
-        <Button
-          style={styles.actionButtons}
-          color={Colors.black}
-          labelStyle={styles.actionsButtonLabelPrimary}
-          onPress={() => navigation.goBack()}
-        >
-          Back to Menu
-        </Button>
-      </View>
+            <Button
+              style={styles.actionButtons}
+              color={Colors.black}
+              labelStyle={styles.actionsButtonLabelPrimary}
+              onPress={() => setCart([])}
+            >
+              Empty Cart
+            </Button>
+          </View>
+        </View>
+      ) : (
+        <View style={{ flex: 1 }}>
+          <View style={globalStyles.spacer} />
+          <Text style={styles.noItemsText}>...No Items selected in cart</Text>
+          <View style={globalStyles.bigSpacer} />
+          <Button
+            style={styles.actionButtons}
+            color={Colors.secondary}
+            mode="contained"
+            labelStyle={styles.actionsButtonLabel}
+            onPress={() =>
+              navigation.navigate("Menu", {
+                screen: "MenuMain",
+              })
+            }
+          >
+            Go to Shop Menu
+          </Button>
+        </View>
+      )}
 
       <View style={globalStyles.spacer} />
     </View>
@@ -96,12 +136,17 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "flex-end",
     margin: 20,
-    borderBottomColor: Colors.secondary,
-    borderBottomWidth: 4,
+    borderTopColor: Colors.secondary,
+    borderTopWidth: 4,
     borderRadius: 2,
+    paddingVertical: 16,
   },
 
   totalPrice: {
     fontSize: 20,
+  },
+
+  noItemsText: {
+    fontSize: 16,
   },
 });

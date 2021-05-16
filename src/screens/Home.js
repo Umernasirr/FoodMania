@@ -6,7 +6,17 @@ import { Colors, globalStyles } from "../helpers/theme";
 
 import CardItem from "../components/CardItem";
 import SpecialCardItem from "../components/SpecialCardItem";
-const Home = () => {
+
+const Home = ({ navigation }) => {
+  const onSelectItem = (item) => {
+    navigation.navigate("Menu", {
+      screen: "ItemDetails",
+      params: {
+        item,
+      },
+    });
+  };
+
   return (
     <View style={globalStyles.container}>
       <View style={globalStyles.triangleTop} />
@@ -29,6 +39,7 @@ const Home = () => {
           <FlatList
             horizontal
             data={categories}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item, separators }) => (
               <View
                 style={{ flex: 1, height: 220 }}
@@ -51,9 +62,9 @@ const Home = () => {
         <View style={globalStyles.spacer}>
           <FlatList
             data={specialItems}
+            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item, separators }) => (
               <View
-                key={item.id.toString()}
                 onShowUnderlay={separators.highlight}
                 onHideUnderlay={separators.unhighlight}
               >
@@ -63,6 +74,9 @@ const Home = () => {
                   price={item.price}
                   weight={item.weight}
                   img={item.img}
+                  category={item.category}
+                  rating={item.rating}
+                  callback={onSelectItem}
                 />
               </View>
             )}

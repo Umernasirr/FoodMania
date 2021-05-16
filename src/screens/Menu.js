@@ -84,10 +84,10 @@ const Menu = ({ navigation, route }) => {
       <View style={globalStyles.spacer}>
         <FlatList
           style={{ marginBottom: 140 }}
+          keyExtractor={(item) => item.id.toString()}
           data={itemList}
           renderItem={({ item, separators }) => (
             <View
-              key={item.id.toString()}
               onShowUnderlay={separators.highlight}
               onHideUnderlay={separators.unhighlight}
             >

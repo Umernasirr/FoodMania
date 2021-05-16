@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { firebase } from "../firebase/config";
 
-import { globalStyles, Colors } from "../helpers/theme";
+import { globalStyles } from "../helpers/theme";
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

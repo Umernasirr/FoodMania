@@ -23,10 +23,11 @@ import Settings from "./src/screens/Settings";
 import Menu from "./src/screens/Menu";
 import Login from "./src/screens/Login";
 import Register from "./src/screens/Register";
-import { Colors, theme } from "./src/helpers/theme";
+import { Colors, globalStyles, theme } from "./src/helpers/theme";
 import ItemDetails from "./src/screens/ItemDetails";
 import Cart from "./src/screens/Cart";
-
+import Billing from "./src/screens/Billing";
+import CartContextProvider from "./src/contexts/CartContext";
 // TODO: Install a library material bottom navigator
 
 export default function App() {
@@ -35,8 +36,9 @@ export default function App() {
   });
 
   const Stack = createStackNavigator();
-  const BottomTab = createBottomTabNavigator();
   const RestaurantStack = createStackNavigator();
+  const CheckoutStack = createStackNavigator();
+  const BottomTab = createBottomTabNavigator();
 
   const RestaurantStackComponent = () => (
     <RestaurantStack.Navigator headerMode="none" initialRouteName="MenuMain">
@@ -56,64 +58,83 @@ export default function App() {
     </Stack.Navigator>
   );
 
+  const CartAndCheckoutComponent = () => (
+    <CheckoutStack.Navigator headerMode="none" initialRouteName="Billing">
+      <CheckoutStack.Screen name="CartMain" component={Cart} />
+      <CheckoutStack.Screen name="Billing" component={Billing} />
+    </CheckoutStack.Navigator>
+  );
+
   return loaded ? (
     <NavigationContainer>
-      <PaperProvider theme={theme}>
-        <BottomTab.Navigator
-          initialRouteName="Cart"
-          tabBarOptions={{
-            activeTintColor: Colors.primary,
-            inactiveTintColor: Colors.dark,
-          }}
-        >
-          <BottomTab.Screen
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons color={color} name="home-outline" size={24} />
-              ),
-
-              tabBarLabel: "Dashboard",
+      <CartContextProvider>
+        <PaperProvider theme={theme}>
+          <BottomTab.Navigator
+            initialRouteName="Cart"
+            tabBarOptions={{
+              activeTintColor: Colors.primary,
+              inactiveTintColor: Colors.dark,
             }}
-            name="Home"
-            component={MainStackComponent}
-          />
+          >
+            <BottomTab.Screen
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <Ionicons color={color} name="home-outline" size={24} />
+                ),
 
-          <BottomTab.Screen
-            options={{
-              tabBarIcon: ({ color }) => (
-                <MaterialIcons color={color} name="restaurant-menu" size={24} />
-              ),
-            }}
-            name="Menu"
-            component={RestaurantStackComponent}
-          />
+                tabBarLabel: "Dashboard",
+              }}
+              name="Home"
+              component={MainStackComponent}
+            />
 
-          <BottomTab.Screen
-            initialParams={[]}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons color={color} name="cart-outline" size={24} />
-              ),
-            }}
-            name="Cart"
-            component={Cart}
-          />
+            <BottomTab.Screen
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <MaterialIcons
+                    color={color}
+                    name="restaurant-menu"
+                    size={24}
+                  />
+                ),
+              }}
+              name="Menu"
+              component={RestaurantStackComponent}
+            />
 
-          <BottomTab.Screen
-            initialParams={[]}
-            options={{
-              tabBarIcon: ({ color }) => (
-                <Ionicons color={color} name="ios-settings-outline" size={24} />
-              ),
-            }}
-            name="Settings"
-            component={Settings}
-          />
-        </BottomTab.Navigator>
-      </PaperProvider>
+            <BottomTab.Screen
+              initialParams={[]}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <Ionicons color={color} name="cart-outline" size={24} />
+                ),
+              }}
+              name="Cart"
+              component={CartAndCheckoutComponent}
+            />
+
+            <BottomTab.Screen
+              initialParams={[]}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <Ionicons
+                    color={color}
+                    name="ios-settings-outline"
+                    size={24}
+                  />
+                ),
+              }}
+              name="Settings"
+              component={Settings}
+            />
+          </BottomTab.Navigator>
+        </PaperProvider>
+      </CartContextProvider>
     </NavigationContainer>
   ) : (
-    <ActivityIndicator />
+    <View style={globalStyles.authContainer}>
+      <ActivityIndicator />
+    </View>
   );
 }
 

@@ -1,13 +1,26 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { Button } from "react-native-paper";
 import { Colors, globalStyles } from "../helpers/theme";
 import { FontAwesome } from "@expo/vector-icons";
 import { AirbnbRating } from "react-native-ratings";
 
+import { CartContext } from "../contexts/CartContext";
+import Snackbar from "../components/Snackbar";
 const ItemDetails = ({ navigation, route }) => {
-  const { img, name, category, weight, price, rating } = route.params.item;
+  const { img, name, price, rating, weight, category } = route.params.item;
   const [count, setCount] = useState(1);
+  const { cart, setCart } = useContext(CartContext);
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const onAddToCart = () => {
+    const tempItem = { ...route.params.item, count };
+
+    setShowSnackbar(true);
+
+    setCart([...cart, tempItem]);
+  };
+
   return (
     <View style={globalStyles.container}>
       <View style={globalStyles.triangleTop} />
@@ -18,8 +31,7 @@ const ItemDetails = ({ navigation, route }) => {
       <View style={globalStyles.bigSpacer}>
         <View style={globalStyles.spacer} />
         <Text style={styles.name}>{name}</Text>
-        {/* <View style={globalStyles.spacer} /> */}
-        {/* <Text style={styles.category}>{category}</Text> */}
+
         <View style={globalStyles.spacer} />
 
         <View
@@ -80,6 +92,7 @@ const ItemDetails = ({ navigation, route }) => {
             color={Colors.secondary}
             mode="contained"
             labelStyle={styles.actionsButtonLabel}
+            onPress={onAddToCart}
           >
             Add to Cart
           </Button>
@@ -95,6 +108,8 @@ const ItemDetails = ({ navigation, route }) => {
         </View>
 
         <View style={globalStyles.spacer} />
+
+        {/* <Snackbar label="Hello" visible={showSnackbar} /> */}
       </View>
     </View>
   );
