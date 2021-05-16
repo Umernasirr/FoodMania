@@ -37,6 +37,9 @@ const Register = ({ navigation }) => {
 
   return (
     <View style={globalStyles.authContainer}>
+      <View style={globalStyles.triangleTop} />
+      <View style={globalStyles.triangleBottom} />
+
       <Text style={styles.heading}>Register</Text>
       <TextInput
         label="Email"
