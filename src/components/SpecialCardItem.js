@@ -21,9 +21,7 @@ const SpecialCardItem = ({
   const onAddToCart = (item) => {
     let alreadyExists = false;
     const tempItem = { ...item, count: 1 };
-    console.log("tempItem", tempItem);
 
-    console.log(item?.id);
     const tempCart = cart.map((cartItem) => {
       if (cartItem.id === item?.id) {
         cartItem.count += 1;

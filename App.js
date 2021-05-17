@@ -28,7 +28,7 @@ import ItemDetails from "./src/screens/ItemDetails";
 import Cart from "./src/screens/Cart";
 import Billing from "./src/screens/Billing";
 import CartContextProvider from "./src/contexts/CartContext";
-// TODO: Install a library material bottom navigator
+import TrackOrder from "./src/screens/TrackOrder";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -59,9 +59,10 @@ export default function App() {
   );
 
   const CartAndCheckoutComponent = () => (
-    <CheckoutStack.Navigator headerMode="none" initialRouteName="Billing">
+    <CheckoutStack.Navigator headerMode="none" initialRouteName="TrackOrder">
       <CheckoutStack.Screen name="CartMain" component={Cart} />
       <CheckoutStack.Screen name="Billing" component={Billing} />
+      <CheckoutStack.Screen name="TrackOrder" component={TrackOrder} />
     </CheckoutStack.Navigator>
   );
 

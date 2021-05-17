@@ -28,7 +28,7 @@ const Cart = ({ navigation }) => {
       <View style={globalStyles.spacer} />
 
       {cart.length > 0 ? (
-        <View>
+        <View style={{ height: "80%" }}>
           <FlatList
             data={cart}
             keyExtractor={(item) => item.id.toString()}
