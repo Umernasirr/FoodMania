@@ -1,29 +1,30 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { users } from "../constants";
+import { Switch } from "react-native-paper";
 import { Colors, globalStyles } from "../helpers/theme";
-const Settings = ({ navigation, route }) => {
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      // The screen is focused
-      // Call any action
-      console.log(route.params);
-      if (route.params?.category) {
-        //  filterItemsOnCategory(route.params.category);
-      }
-    });
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
-    return unsubscribe;
-  }, [navigation]);
+const Settings = () => {
+  const [isSwitchOn, setIsSwitchOn] = React.useState(false);
+  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
   return (
-    <View>
-      <Text>Settings</Text>
+    <View style={globalStyles.container}>
+      <Text style={styles.heading}>Settings</Text>
+      <Text>Name: Umer Nasir </Text>
+      <Text>Email: umeri@nasir.com </Text>
+      <Text>
+        Notification:{" "}
+        <Switch value={isSwitchOn} onValueChange={onToggleSwitch} />{" "}
+      </Text>
     </View>
   );
 };
 
 export default Settings;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  heading: {
+    fontSize: 32,
+    fontWeight: "bold",
+  },
+});
