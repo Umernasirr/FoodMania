@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Colors } from "../helpers/theme";
 import { MaterialIcons } from "@expo/vector-icons";
 
-const CheckoutItem = ({ id, name, price, img, category, count }) => {
+import { CartContext } from "../contexts/CartContext";
+
+const CheckoutItem = ({ id, name, price, img, count }) => {
+  const { cart, setCart } = useContext(CartContext);
   //
-  const onRemoveFromCart = () => {};
+  const onRemoveFromCart = (id) => {
+    // Task: Removing an item from an array
+    // forEach, map, filter
+    // forEach -> doesnt return anything
+    // map -> does return the current item
+    // filter -> it returns item without change on the basis of a condition
+
+    const tempCart = cart.filter((cartItem) => cartItem.id !== id);
+
+    setCart(tempCart);
+  };
 
   return (
     <View style={styles.checkoutItem}>
@@ -22,7 +35,7 @@ const CheckoutItem = ({ id, name, price, img, category, count }) => {
         </Text>
       </View>
 
-      <TouchableOpacity onPress={onRemoveFromCart}>
+      <TouchableOpacity onPress={() => onRemoveFromCart(id)}>
         <MaterialIcons color={Colors.secondary} name="cancel" size={26} />
       </TouchableOpacity>
     </View>
@@ -49,7 +62,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
   },
-  count: {},
+
   countTxt: {
     fontWeight: "600",
     fontSize: 16,
