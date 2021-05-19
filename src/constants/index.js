@@ -238,3 +238,24 @@ export const ITEMS = [
     rating: 3,
   },
 ];
+
+export const RESTAURANTLOCATIONS = [
+  {
+    latitude: 37.4670005,
+    longitude: -122.1999359,
+    title: "Branch 1",
+    img: require("../../assets/images/restaurant_photo.jpg"),
+  },
+  {
+    latitude: 37.6219565,
+    longitude: -122.1839359,
+    title: "Branch 2",
+    img: require("../../assets/images/restaurant_photo.jpg"),
+  },
+  {
+    latitude: 37.6719565,
+    longitude: -122.439359,
+    title: "Branch 3",
+    img: require("../../assets/images/restaurant_photo.jpg"),
+  },
+];
