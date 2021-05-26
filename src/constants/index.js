@@ -253,9 +253,79 @@ export const RESTAURANTLOCATIONS = [
     img: require("../../assets/images/restaurant_photo.jpg"),
   },
   {
-    latitude: 37.6719565,
-    longitude: -122.439359,
+    latitude: 37.4070005,
+    longitude: -122.0900059,
     title: "Branch 3",
     img: require("../../assets/images/restaurant_photo.jpg"),
+  },
+];
+
+export const ORDERS = [
+  {
+    id: 1,
+
+    total: 230,
+
+    orders: [
+      {
+        id: 6,
+        name: "Primavera Pizza",
+        price: 25,
+        weight: 210,
+        img: require("../../assets/images/pizza.png"),
+        category: "Pizza",
+        rating: 3,
+        count: 2,
+      },
+      {
+        id: 7,
+        name: "Pepsi Coke",
+        price: 57,
+        weight: 23,
+        img: require("../../assets/images/pepsi.png"),
+        category: "Soft Drinks",
+        rating: 5,
+        count: 6,
+      },
+
+      {
+        id: 8,
+        name: "Grilled Steak",
+        icoName: "food-steak",
+        price: 23,
+        weight: 80,
+        img: require("../../assets/images/grilled.png"),
+        category: "Grilled",
+        rating: 3,
+        count: 4,
+      },
+    ],
+  },
+
+  {
+    id: 2,
+    total: 120,
+    orders: [
+      {
+        id: 1,
+        name: "Pasta Pesto",
+        price: 60,
+        weight: 128,
+        img: require("../../assets/images/pasta.png"),
+        category: "Italian",
+        rating: 4,
+        count: 2,
+      },
+      {
+        id: 2,
+        name: "Primavera Pizza",
+        price: 25,
+        weight: 210,
+        img: require("../../assets/images/pizza.png"),
+        category: "Italian",
+        rating: 5,
+        count: 4,
+      },
+    ],
   },
 ];

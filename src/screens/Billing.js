@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { TextInput } from "react-native-paper";
 import { Button } from "react-native-paper";
@@ -8,8 +8,42 @@ import CheckoutItem from "../components/CheckoutItem";
 import { CartContext } from "../contexts/CartContext";
 
 const Billing = ({ navigation }) => {
-  const { cart, setCart } = useContext(CartContext);
+  const { cart, setCart, orders, setOrders } = useContext(CartContext);
+  const [number, setNumber] = useState("");
+  const [address, setAddress] = useState("");
+  const [total, setTotal] = useState(0);
 
+  useEffect(() => {
+    let tempTotal = 0;
+    cart.map((cartItem) => {
+      tempTotal += cartItem.count * cartItem.price;
+    });
+
+    setTotal(tempTotal);
+  }, [cart]);
+
+  const confirmOrder = () => {
+    if (number === "" || address === "") {
+      alert("Please Input the Correct Order Details");
+    } else {
+      const today = new Date();
+
+      const time =
+        today.getDate() + "/" + today.getMonth() + "/" + today.getFullYear();
+
+      const tempOrder = {
+        id: Math.round(Math.random() * 100),
+        createdAt: time,
+        orders: cart,
+        total: total,
+      };
+
+      setOrders([...orders, tempOrder]);
+
+      setCart([]);
+      navigation.navigate("TrackOrder");
+    }
+  };
   return (
     <View style={globalStyles.container}>
       <View style={globalStyles.triangleTop} />
@@ -29,12 +63,16 @@ const Billing = ({ navigation }) => {
               style={styles.input}
               theme={{ colors: { text: "black", primary: Colors.secondary } }}
               keyboardType="phone-pad"
+              value={number}
+              onChangeText={setNumber}
             />
 
             <TextInput
               label="Address"
               style={styles.input}
               theme={{ colors: { text: "black", primary: Colors.secondary } }}
+              value={address}
+              onChangeText={setAddress}
             />
           </View>
           <View style={globalStyles.spacer} />
@@ -60,13 +98,19 @@ const Billing = ({ navigation }) => {
                 </View>
               )}
             />
+
+            <View style={styles.totalPriceContainer}>
+              <Text style={styles.totalPrice}>Total Price: ${total}</Text>
+              <View style={styles.spacer} />
+            </View>
+
             <View style={styles.actionButtons}>
               <Button
                 color={Colors.secondary}
                 labelStyle={{ color: "white" }}
                 mode="contained"
                 style={styles.button}
-                onPress={() => navigation.navigate("TrackOrder")}
+                onPress={confirmOrder}
               >
                 Finish and Track Order
               </Button>
@@ -130,5 +174,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 8,
+  },
+  totalPriceContainer: {
+    margin: 8,
+    textAlign: "right",
+    alignSelf: "flex-end",
+  },
+  totalPrice: {
+    fontSize: 20,
+    padding: 8,
+    borderRadius: 8,
   },
 });

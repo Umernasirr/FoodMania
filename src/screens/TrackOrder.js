@@ -7,6 +7,9 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+
+import { getDistance } from "geolib";
+
 import * as Location from "expo-location";
 import { Colors } from "../helpers/theme";
 import { Ionicons } from "@expo/vector-icons";
@@ -81,6 +84,23 @@ const TrackOrder = () => {
             >
               <Ionicons name="restaurant" size={24} color={Colors.secondary} />
             </MapView.Marker>
+          ))}
+
+          {RESTAURANTLOCATIONS.map((restaurantLoc) => (
+            <MapView.Polyline
+              coordinates={[
+                {
+                  latitude: location.coords.latitude,
+                  longitude: location.coords.longitude,
+                },
+                {
+                  latitude: restaurantLoc.latitude,
+                  longitude: restaurantLoc.longitude,
+                },
+              ]}
+              strokeColor={Colors.secondary} // fallback for when `strokeColors` is not supported by the map-provider
+              strokeWidth={2}
+            />
           ))}
         </MapView>
 

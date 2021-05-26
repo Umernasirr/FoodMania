@@ -1,22 +1,17 @@
 import React, { useState } from "react";
 import { View, Image, StyleSheet } from "react-native";
-import { Modal, Portal, Text, Provider } from "react-native-paper";
+import { Modal, Portal, Text, Provider, Button } from "react-native-paper";
 import { Colors, globalStyles } from "../helpers/theme";
 import { getDistance } from "geolib";
-
+import { useNavigation } from "@react-navigation/native";
 const RestaurantModal = ({
   visible,
   setVisible,
   userLocation,
   selectedRestaurant,
 }) => {
+  const navigation = useNavigation();
   const hideModal = () => setVisible(false);
-
-  const time_convert = (num) => {
-    var hours = Math.floor(num / 60);
-    var minutes = num % 60;
-    return hours + ":" + minutes;
-  };
 
   const containerStyle = {
     flex: 1,
@@ -29,23 +24,19 @@ const RestaurantModal = ({
     justifyContent: "flex-start",
   };
 
-  console.log(selectedRestaurant);
-
   let distance = selectedRestaurant.latitude
-      ? getDistance(
-          {
-            latitude: userLocation.coords.latitude,
-            longitude: userLocation.coords.longitude,
-          },
-          {
-            latitude: selectedRestaurant.latitude,
-            longitude: selectedRestaurant.longitude,
-          }
-        )
-      : 1000,
-    distance = distance / 1000;
-
-  const timeTakenToTravel = time_convert((distance / 60).toFixed(2));
+    ? getDistance(
+        {
+          latitude: userLocation.coords.latitude,
+          longitude: userLocation.coords.longitude,
+        },
+        {
+          latitude: selectedRestaurant.latitude,
+          longitude: selectedRestaurant.longitude,
+        }
+      )
+    : 1000;
+  distance = distance / 1000;
 
   return (
     <Provider>
@@ -59,9 +50,30 @@ const RestaurantModal = ({
           <Image source={selectedRestaurant.img} style={styles.image} />
           <View style={globalStyles.bigSpacer} />
           <Text style={styles.txt}>{selectedRestaurant.title}</Text>
-          <Text>{distance} km</Text>
+          <View style={globalStyles.spacer} />
+          <Text style={styles.distanceInfo}>is Located</Text>
+          <Text style={styles.distance}>{distance} km</Text>
+          <Text style={styles.distanceInfo}>
+            {selectedRestaurant.title} From You!
+          </Text>
 
-          <Text>{timeTakenToTravel}</Text>
+          <Button
+            color={Colors.secondary}
+            labelStyle={{ color: Colors.white }}
+            style={styles.button}
+            mode="contained"
+            onPress={() => navigation.navigate("Orders")}
+          >
+            View Orders
+          </Button>
+
+          <Button
+            color={Colors.secondary}
+            style={styles.button}
+            onPress={hideModal}
+          >
+            Close Modal
+          </Button>
         </Modal>
       </Portal>
     </Provider>
@@ -78,6 +90,18 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     color: Colors.secondary,
+  },
+  distanceInfo: { margin: 8 },
+  distance: {
+    fontSize: 24,
+    borderBottomColor: Colors.primary,
+    borderBottomWidth: 2,
+    paddingHorizontal: 40,
+    padding: 8,
+  },
+  button: {
+    padding: 8,
+    margin: 8,
   },
 });
 
