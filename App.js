@@ -29,7 +29,8 @@ import Cart from "./src/screens/Cart";
 import Billing from "./src/screens/Billing";
 import CartContextProvider from "./src/contexts/CartContext";
 import TrackOrder from "./src/screens/TrackOrder";
-
+import Orders from "./src/screens/Orders";
+import OrderDetails from "./src/screens/OrderDetails";
 export default function App() {
   const [loaded] = useFonts({
     LemonMilk: require("./assets/fonts/LEMONMILK-Medium.otf"),
@@ -39,7 +40,7 @@ export default function App() {
   const RestaurantStack = createStackNavigator();
   const CheckoutStack = createStackNavigator();
   const BottomTab = createBottomTabNavigator();
-
+  const OrderStack = createStackNavigator();
   const RestaurantStackComponent = () => (
     <RestaurantStack.Navigator headerMode="none" initialRouteName="MenuMain">
       <RestaurantStack.Screen name="MenuMain" component={Menu} />
@@ -59,11 +60,19 @@ export default function App() {
   );
 
   const CartAndCheckoutComponent = () => (
-    <CheckoutStack.Navigator headerMode="none" initialRouteName="TrackOrder">
+    <CheckoutStack.Navigator headerMode="none" initialRouteName="CartMain">
       <CheckoutStack.Screen name="CartMain" component={Cart} />
       <CheckoutStack.Screen name="Billing" component={Billing} />
       <CheckoutStack.Screen name="TrackOrder" component={TrackOrder} />
     </CheckoutStack.Navigator>
+  );
+
+  const OrderStackComponent = () => (
+    <OrderStack.Navigator headerMode="none" initialRouteName="OrdersMain">
+      <OrderStack.Screen name="OrdersMain" component={Orders} />
+
+      <OrderStack.Screen name="OrderDetails" component={OrderDetails} />
+    </OrderStack.Navigator>
   );
 
   return loaded ? (
@@ -112,6 +121,17 @@ export default function App() {
               }}
               name="Cart"
               component={CartAndCheckoutComponent}
+            />
+
+            <BottomTab.Screen
+              initialParams={[]}
+              options={{
+                tabBarIcon: ({ color }) => (
+                  <Ionicons color={color} name="ios-menu-outline" size={24} />
+                ),
+              }}
+              name="Orders"
+              component={OrderStackComponent}
             />
 
             <BottomTab.Screen

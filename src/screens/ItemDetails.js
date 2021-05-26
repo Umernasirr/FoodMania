@@ -78,14 +78,6 @@ const ItemDetails = ({ navigation, route }) => {
           </View>
         </View>
 
-        <Text style={styles.desc}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu
-          odio eleifend, elementum mauris vel, vehicula nisl. Aliquam erat
-          volutpat. Sed sit amet dictum purus. Quisque id semper justo. Integer
-          turpis magna, consectetur id elit sit amet, mollis posuere odio. Duis
-          a feugiat nisl.
-        </Text>
-
         <View style={styles.actions}>
           <Button
             style={styles.actionButtons}
