@@ -26,7 +26,7 @@ const ItemDetails = ({ navigation, route }) => {
       <View style={globalStyles.triangleTop} />
       <View style={globalStyles.triangleBottom} />
       <View style={globalStyles.bigSpacer} />
-      <Image source={img} style={styles.image} />
+      <Image source={{ uri: img }} style={styles.image} />
 
       <View style={globalStyles.bigSpacer}>
         <View style={globalStyles.spacer} />
@@ -93,7 +93,7 @@ const ItemDetails = ({ navigation, route }) => {
             style={styles.actionButtons}
             color={Colors.secondary}
             labelStyle={styles.actionsButtonLabelPrimary}
-            onPress={() => navigation.goBack()}
+            onPress={() => navigation.navigate("Menu", { screen: "MenuMain" })}
           >
             Back to Menu
           </Button>

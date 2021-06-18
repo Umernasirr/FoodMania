@@ -75,7 +75,7 @@ const SpecialCardItem = ({
           </Button>
         </View>
 
-        <Image style={styles.image} source={img} />
+        <Image style={styles.image} source={{ uri: img }} />
       </View>
     </TouchableRipple>
   );

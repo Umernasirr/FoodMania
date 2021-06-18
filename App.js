@@ -80,7 +80,7 @@ export default function App() {
       <CartContextProvider>
         <PaperProvider theme={theme}>
           <BottomTab.Navigator
-            initialRouteName="Cart"
+            initialRouteName="Home"
             tabBarOptions={{
               activeTintColor: Colors.primary,
               inactiveTintColor: Colors.dark,

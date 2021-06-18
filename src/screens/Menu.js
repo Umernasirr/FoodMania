@@ -1,14 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from "react-native";
 import Search from "../components/Search";
 import { globalStyles } from "../helpers/theme";
 import { Button } from "react-native-paper";
-import { ITEMS } from "../constants/";
 import SpecialCardItem from "../components/SpecialCardItem";
 import { Colors } from "../helpers/theme";
+import { firebase } from "../firebase/config";
 
 const Menu = ({ navigation, route }) => {
-  const [itemList, setItemsList] = useState(ITEMS);
+  const [itemList, setItemsList] = useState([]);
+  const [allItems, setAllItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const getItems = async () => {
+    const snapshot = await firebase.firestore().collection("items").get();
+    const data = await snapshot.docs.map((doc) => doc.data());
+    setItemsList(data);
+    setAllItems(data);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    getItems();
+    setLoading(false);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
@@ -18,7 +38,7 @@ const Menu = ({ navigation, route }) => {
       if (route.params?.category) {
         filterItemsOnCategory(route.params.category);
       } else {
-        setItemsList(ITEMS);
+        setItemsList(allItems);
       }
     });
 
@@ -29,7 +49,7 @@ const Menu = ({ navigation, route }) => {
   const filterItems = (searchQuery) => {
     console.log(searchQuery);
     if (searchQuery === "") {
-      setItemsList(ITEMS);
+      setItemsList(allItems);
     } else {
       searchQuery = searchQuery.toString().toLowerCase();
       const tempItems = itemList.filter((item) =>
@@ -41,7 +61,7 @@ const Menu = ({ navigation, route }) => {
   };
 
   const filterItemsOnCategory = (category) => {
-    const tempItems = ITEMS.filter(
+    const tempItems = allItems.filter(
       (item) => item.category.toLowerCase() === category.toLowerCase()
     );
 
@@ -55,7 +75,7 @@ const Menu = ({ navigation, route }) => {
   };
 
   const resetItemsList = () => {
-    setItemsList(ITEMS);
+    setItemsList(allItems);
     navigation.setParams({ category: undefined });
   };
   return (
@@ -65,46 +85,54 @@ const Menu = ({ navigation, route }) => {
       <View style={globalStyles.bigSpacer} />
       <Text style={styles.heading}>Menu</Text>
       <View style={globalStyles.spacer} />
+
       <Search callback={filterItems} />
 
-      {itemList.length === 0 && (
-        <View style={globalStyles.spacer}>
-          <View style={globalStyles.spacer} />
-          <Text>No Items Found... </Text>
-          <Button
-            onPress={resetItemsList}
-            labelStyle={styles.button}
-            color={Colors.secondary}
-          >
-            Reset Filter
-          </Button>
+      {loading ? (
+        <View style={globalStyles.bigSpacer}>
+          <ActivityIndicator size="large" color={Colors.black} />
         </View>
-      )}
-      {/*  */}
-      <View style={globalStyles.spacer}>
-        <FlatList
-          style={{ marginBottom: 140 }}
-          keyExtractor={(item) => item.id.toString()}
-          data={itemList}
-          renderItem={({ item, separators }) => (
-            <View
-              onShowUnderlay={separators.highlight}
-              onHideUnderlay={separators.unhighlight}
-            >
-              <SpecialCardItem
-                id={item.id}
-                name={item.name}
-                price={item.price}
-                weight={item.weight}
-                img={item.img}
-                callback={onSelectItem}
-                category={item.category}
-                rating={item.rating}
-              />
+      ) : (
+        <View>
+          {itemList.length === 0 && (
+            <View style={globalStyles.spacer}>
+              <View style={globalStyles.spacer} />
+              <Text>No Items Found... </Text>
+              <Button
+                onPress={resetItemsList}
+                labelStyle={styles.button}
+                color={Colors.secondary}
+              >
+                Reset Filter
+              </Button>
             </View>
           )}
-        />
-      </View>
+          {/*  */}
+          <View style={globalStyles.spacer}>
+            <FlatList
+              style={{ marginBottom: 140 }}
+              data={itemList}
+              renderItem={({ item, separators }) => (
+                <View
+                  onShowUnderlay={separators.highlight}
+                  onHideUnderlay={separators.unhighlight}
+                >
+                  <SpecialCardItem
+                    id={item.id}
+                    name={item.name}
+                    price={item.price}
+                    weight={item.weight}
+                    img={item.img}
+                    callback={onSelectItem}
+                    category={item.category}
+                    rating={item.rating}
+                  />
+                </View>
+              )}
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };
