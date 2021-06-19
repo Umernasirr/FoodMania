@@ -23,7 +23,7 @@ const CheckoutItem = ({ id, name, price, img, count }) => {
   return (
     <View style={styles.checkoutItem}>
       <View style={styles.left}>
-        <Image source={img} style={styles.image} />
+        <Image source={{ uri: img }} style={styles.image} />
       </View>
       <View style={styles.right}>
         <Text style={styles.name}>{name}</Text>

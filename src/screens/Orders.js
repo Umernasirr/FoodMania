@@ -2,13 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { globalStyles, Colors } from "../helpers/theme";
 import { CartContext } from "../contexts/CartContext";
-import { ORDERS } from "../constants";
 import OrderItem from "../components/OrderItem";
 import { DataTable } from "react-native-paper";
 
 const Orders = () => {
   const { orders } = useContext(CartContext);
-
   return (
     <View style={globalStyles.container}>
       <View style={globalStyles.triangleTop} />
@@ -31,18 +29,19 @@ const Orders = () => {
           <DataTable.Header>
             <DataTable.Title>Id</DataTable.Title>
             <DataTable.Title numeric>Created At</DataTable.Title>
-            <DataTable.Title numeric>Fat</DataTable.Title>
+            <DataTable.Title numeric>Total</DataTable.Title>
           </DataTable.Header>
 
           <FlatList
             data={orders}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item, separators }) => (
+            renderItem={({ item }) => (
               <OrderItem
                 id={item.id}
                 orders={item.orders}
                 total={item.total}
                 createdAt={item.createdAt}
+                number={item.number}
+                address={item.address}
               />
             )}
           />

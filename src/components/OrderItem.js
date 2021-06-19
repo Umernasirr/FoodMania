@@ -3,16 +3,23 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import { DataTable } from "react-native-paper";
 import { Colors } from "../helpers/theme";
 import { useNavigation } from "@react-navigation/native";
-const OrderItem = ({ id, orders, total, createdAt }) => {
+const OrderItem = ({ id, orders, total, createdAt, number, address }) => {
   const navigation = useNavigation();
-
   return (
     <DataTable.Row
-      onPress={() => navigation.navigate("OrderDetails", { id, orders, total })}
+      onPress={() =>
+        navigation.navigate("OrderDetails", {
+          id,
+          orders,
+          total,
+          number,
+          address,
+        })
+      }
     >
       <DataTable.Cell>{id} </DataTable.Cell>
       <DataTable.Cell numeric>{createdAt}</DataTable.Cell>
-      <DataTable.Cell numeric>$ {total}</DataTable.Cell>
+      <DataTable.Cell numeric>${total}</DataTable.Cell>
     </DataTable.Row>
   );
 };

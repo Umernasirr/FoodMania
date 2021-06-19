@@ -134,7 +134,7 @@ export default function App() {
               component={OrderStackComponent}
             />
 
-            <BottomTab.Screen
+            {/* <BottomTab.Screen
               initialParams={[]}
               options={{
                 tabBarIcon: ({ color }) => (
@@ -147,7 +147,7 @@ export default function App() {
               }}
               name="Settings"
               component={Settings}
-            />
+            /> */}
           </BottomTab.Navigator>
         </PaperProvider>
       </CartContextProvider>

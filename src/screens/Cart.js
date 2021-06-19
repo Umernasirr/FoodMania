@@ -31,7 +31,6 @@ const Cart = ({ navigation }) => {
         <View style={{ height: "80%" }}>
           <FlatList
             data={cart}
-            keyExtractor={(item) => item.id.toString()}
             renderItem={({ item, separators }) => (
               <View
                 style={{ flex: 1 }}

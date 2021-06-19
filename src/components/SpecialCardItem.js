@@ -58,7 +58,7 @@ const SpecialCardItem = ({
             />
           </View>
           <Text style={styles.weight}>Weight: {weight} gr</Text>
-          <Text style={styles.price}>Price: {price} $</Text>
+          <Text style={styles.price}>Price: ${price}</Text>
           <Button
             onPress={() =>
               onAddToCart({ id, name, price, weight, img, category, rating })

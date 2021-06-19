@@ -20,25 +20,29 @@ const Menu = ({ navigation, route }) => {
   const getItems = async () => {
     const snapshot = await firebase.firestore().collection("items").get();
     const data = await snapshot.docs.map((doc) => doc.data());
-    setItemsList(data);
-    setAllItems(data);
+
+    const tempItems = data.map((item) => {
+      item.id = Math.round(Math.random() * 100000);
+      return item;
+    });
+    setItemsList(tempItems);
+    setAllItems(tempItems);
+    setLoading(false);
   };
 
   useEffect(() => {
     setLoading(true);
     getItems();
-    setLoading(false);
   }, []);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       // The screen is focused
       // Call any action
-      console.log(route.params);
       if (route.params?.category) {
         filterItemsOnCategory(route.params.category);
       } else {
-        setItemsList(allItems);
+        getItems();
       }
     });
 
@@ -47,8 +51,7 @@ const Menu = ({ navigation, route }) => {
   }, [navigation, route]);
 
   const filterItems = (searchQuery) => {
-    console.log(searchQuery);
-    if (searchQuery === "") {
+    if (searchQuery === "" || !searchQuery) {
       setItemsList(allItems);
     } else {
       searchQuery = searchQuery.toString().toLowerCase();
@@ -66,6 +69,7 @@ const Menu = ({ navigation, route }) => {
     );
 
     setItemsList(tempItems);
+    console.log(tempItems);
   };
 
   const onSelectItem = (item) => {
@@ -90,11 +94,11 @@ const Menu = ({ navigation, route }) => {
 
       {loading ? (
         <View style={globalStyles.bigSpacer}>
-          <ActivityIndicator size="large" color={Colors.black} />
+          <ActivityIndicator size="large" color={Colors.secondary} />
         </View>
       ) : (
         <View>
-          {itemList.length === 0 && (
+          {!loading && itemList.length === 0 && (
             <View style={globalStyles.spacer}>
               <View style={globalStyles.spacer} />
               <Text>No Items Found... </Text>

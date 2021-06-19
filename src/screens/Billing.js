@@ -4,6 +4,7 @@ import { TextInput } from "react-native-paper";
 import { Button } from "react-native-paper";
 import { Colors, globalStyles } from "../helpers/theme";
 import CheckoutItem from "../components/CheckoutItem";
+import { firebase } from "../firebase/config";
 
 import { CartContext } from "../contexts/CartContext";
 
@@ -22,7 +23,7 @@ const Billing = ({ navigation }) => {
     setTotal(tempTotal);
   }, [cart]);
 
-  const confirmOrder = () => {
+  const confirmOrder = async () => {
     if (number === "" || address === "") {
       alert("Please Input the Correct Order Details");
     } else {
@@ -32,16 +33,22 @@ const Billing = ({ navigation }) => {
         today.getDate() + "/" + today.getMonth() + "/" + today.getFullYear();
 
       const tempOrder = {
-        id: Math.round(Math.random() * 100),
+        id: Math.round(Math.random() * 100000),
         createdAt: time,
         orders: cart,
         total: total,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        address: address,
+        number: number,
       };
 
+      console.log(tempOrder);
       setOrders([...orders, tempOrder]);
 
-      setCart([]);
-      navigation.navigate("TrackOrder");
+      await firebase.firestore().collection("orders").add(tempOrder);
+
+      // setCart([]);
+      // navigation.navigate("TrackOrder");
     }
   };
   return (
@@ -80,7 +87,6 @@ const Billing = ({ navigation }) => {
           <View style={{ height: "60%", borderRadius: 16 }}>
             <FlatList
               data={cart}
-              keyExtractor={(item) => item.id.toString()}
               renderItem={({ item, separators }) => (
                 <View
                   key={item.key}

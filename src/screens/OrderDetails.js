@@ -1,16 +1,10 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import { Button, Divider } from "react-native-paper";
 import { Colors, globalStyles } from "../helpers/theme";
-import { FontAwesome } from "@expo/vector-icons";
-import { AirbnbRating } from "react-native-ratings";
 
-import { CartContext } from "../contexts/CartContext";
-import Snackbar from "../components/Snackbar";
 const OrderDetails = ({ navigation, route }) => {
-  const { id, orders, total } = route.params;
-  const [count, setCount] = useState(1);
-  const { cart, setCart } = useContext(CartContext);
+  const { id, orders, total, address, number } = route.params;
 
   return (
     <View style={globalStyles.container}>
@@ -35,6 +29,14 @@ const OrderDetails = ({ navigation, route }) => {
 
           <View style={globalStyles.spacer} />
 
+          <Text style={styles.price}>
+            Address: <Text style={styles.dollar}> {address} </Text>
+          </Text>
+
+          <Text style={styles.price}>
+            Number: <Text style={styles.dollar}> {number} </Text>
+          </Text>
+
           <View style={styles.actionsContainer}>
             <Text style={styles.price}>
               Order Total: <Text style={styles.dollar}> ${total} </Text>
@@ -45,7 +47,6 @@ const OrderDetails = ({ navigation, route }) => {
           <View style={globalStyles.spacer}>
             <FlatList
               data={orders}
-              keyExtractor={(item) => item.id.toString()}
               renderItem={({ item, separators }) => (
                 <View style={styles.itemContainer}>
                   <Text>{item.name}</Text>
@@ -103,9 +104,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     margin: 8,
   },
-  price: { fontSize: 24, color: Colors.black },
+  price: { fontSize: 20, color: Colors.black },
   dollar: {
-    fontSize: 24,
+    fontSize: 18,
     color: Colors.secondary,
     fontWeight: "bold",
   },
